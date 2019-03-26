@@ -8,12 +8,12 @@ function createWindow () {
 }
 
 function connectYanaptiChain() {
-    const cmd = spawn('bin\\multichaind.exe', ['YanaptiChain@200.58.79.23:7725']);
+    const cmd = spawn('bin\\multichaind.exe', ['YanaptiChain@192.168.1.4:9551']);
 
     cmd.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
         let buffer = data.toString();
-        let regexWallet = /(12[a-zA-Z0-9]+)/g;
+        let regexWallet = /([a-zA-Z0-9]{38,})/g;
         if(regexWallet.test(buffer)){
           let walletId = buffer.match(regexWallet)[0]
           console.log(walletId);
