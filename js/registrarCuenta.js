@@ -1,9 +1,18 @@
+const electron = require('electron');
+const ipc = electron.ipcRenderer;
+
+ipc.on('notify-walletid',(event,walletId)=>{
+  alert(walletId);
+  let json = generarJSON(walletId);
+  enviarJSON(json);
+});
+
 $(document).ready(function(){
   let botonRegistro = $("#botonRegistro");
   let formularioRegistro = $("#formularioRegistro");
 
   botonRegistro.click(function(){
-    enviarFormulario();
+    conectarYanaptiChain();
   });
 
   formularioRegistro.submit(function(event){
@@ -31,9 +40,38 @@ $(document).ready(function(){
 
 });
 
-function enviarFormulario(){
+function generarJSON(walletId){
+  let object = {};
+  let formData = new FormData(document.forms.namedItem("formRegistro"));
+  formData.forEach((value, key) =>  {
+    object[key] = value;
+  });
+  object["wallet"] = walletId;
+  let json = JSON.stringify(object);
+  return json;
+}
+
+function enviarJSON(json) {
+  console.log(json);
+  let xmlHttpRequest = new XMLHttpRequest();
+  let action = "http://200.58.79.23:8085/users";
+  xmlHttpRequest.open("POST",action,true);
+  xmlHttpRequest.setRequestHeader('Content-Type','application/json');
+  xmlHttpRequest.onreadystatechange = function(respuesta){
+    if(xmlHttpRequest.readyState == 4){
+      if(xmlHttpRequest.status == 200){
+        let token = respuesta.target.response;
+        console.log(token);
+      }
+    }
+  };
+  xmlHttpRequest.send(json);
+}
+
+function conectarYanaptiChain(){
   if(validarFormulario()){
-    alert("Enviando Formulario");
+    alert("Conectando YanaptiChain");
+    ipc.send('connect-yanaptichain');
   }
 }
 
@@ -55,7 +93,7 @@ function validarFormulario(){
   let validarCorreo = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
   let validarPasswd = new RegExp("^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{8,16}$");
   let validacionNombre = validarCamposTexto.test(nombre);
-  let validacionApellido = validarCamposTexto.test(nombre);
+  let validacionApellido = validarCamposTexto.test(apellido);
   let validacionCorreo = validarCorreo.test(correo);
   let validacionContraseña = validarPasswd.test(contraseña);
   let validacionConfirmacion = validarPasswd.test(confirmacion);

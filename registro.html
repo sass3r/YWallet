@@ -67,28 +67,28 @@
         <div class="card-header">
           <i class="fa fa-user-circle">&nbsp;</i>Registrar Cuenta</div>
         <div class="card-body">
-          <form id="formularioRegistro">
+          <form name="formRegistro" id="formularioRegistro">
             <div class="form-group">
               <div class="form-row">
                 <div class="col-md-6">
                   <label for="exampleInputName">Nombre</label>
-                  <input class="form-control" id="nombre" type="text" aria-describedby="nameHelp" onchange="correccionNombre()" placeholder="Ingrese su nombre">
+                  <input class="form-control" name="name" id="nombre" type="text" aria-describedby="nameHelp" onchange="correccionNombre()" placeholder="Ingrese su nombre">
                 </div>
                 <div class="col-md-6">
                   <label for="exampleInputLastName">Apellido</label>
-                  <input class="form-control" id="apellido" type="text" aria-describedby="nameHelp" onchange="correccionApellido()" placeholder="Ingrese su apellido">
+                  <input class="form-control" name="lastname" id="apellido" type="text" aria-describedby="nameHelp" onchange="correccionApellido()" placeholder="Ingrese su apellido">
                 </div>
               </div>
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Correo Electronico</label>
-              <input class="form-control" id="correoElectronico" type="email" aria-describedby="emailHelp" onchange="correccionCorreo()" placeholder="Ingrese su correo">
+              <input class="form-control" name="email" id="correoElectronico" type="email" aria-describedby="emailHelp" onchange="correccionCorreo()" placeholder="Ingrese su correo">
             </div>
             <div class="form-group">
               <div class="form-row">
                 <div class="col-md-6">
                   <label for="exampleInputPassword1">Contraseña</label>
-                  <input class="form-control" id="contraseña" type="password" aria-describedby="passwordHelpBlock" onchange="correccionContraseña()" placeholder="Contraseña">
+                  <input class="form-control" name="password" id="contraseña" type="password" aria-describedby="passwordHelpBlock" onchange="correccionContraseña()" placeholder="Contraseña">
                   <small id="passwordHelpBlock" class="form-text text-muted">
                    La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, una minúscula y una mayúscula.
                   </small>
