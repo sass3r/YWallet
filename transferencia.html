@@ -28,7 +28,7 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="inicio.html">
+          <a class="nav-link" href="saldo.html">
             <i class="fa fa-fw fa-home"></i>
             <span class="nav-link-text">Inicio</span>
           </a>
@@ -71,10 +71,6 @@
             <div class="form-group">
               <div class="form-row">
                 <div class="col-md-6">
-                  <label for="exampleInputName">Cuenta Origen</label>
-                  <input class="form-control" name="origen" id="cuentaOrigen" type="text" aria-describedby="nameHelp" onchange="correccionCuentaOrigen()" placeholder="Ingrese la cuenta origen">
-                </div>
-                <div class="col-md-6">
                   <label for="exampleInputLastName">Cuenta Destino</label>
                   <input class="form-control" name="destino" id="cuentaDestino" type="text" aria-describedby="nameHelp" onchange="correccionCuentaDestino()" placeholder="Ingrese la cuenta destino">
                 </div>
@@ -84,6 +80,11 @@
               <label for="exampleInputEmail1">Monto</label>
               <input class="form-control" name="monto" id="montoTransaccion" type="number" aria-describedby="montoHelp" onchange="correccionMonto()" placeholder="Ingrese el monto a transferir">
             </div>
+            <!--div class="form-group">
+              <label for="exampleInputEmail1">Razon</label>
+              <input class="form-control" name="razon" id="razon" type="text" aria-describedby="razonHelp" onchange="correccionRazon()" placeholder="Ingrese el motivo de la transaccion">
+            </div--!>
+
             <!--div class="form-group">
               <div class="form-row">
                 <div class="col-md-6">

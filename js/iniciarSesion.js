@@ -1,10 +1,12 @@
+const electron = require('electron');
+const ipc = electron.ipcRenderer;
+
 $(document).ready(function(){
     let botonIniciarSesion = $('#botonLogin');
     let token = undefined;
 
     botonIniciarSesion.click(function(){
         iniciarSesion();
-        location.href = "saldo.html";
     });
 
 });
@@ -27,6 +29,9 @@ function iniciarSesion(){
             if(xmlHttpRequest.status == 200){
                 response = respuesta.target.response;
                 token = response.token;
+                ipc.send('connect-yanaptichain');
+                ipc.send('view-saldo');
+                ipc.send('notify-token',response);
                 console.log(response)
             }
         }

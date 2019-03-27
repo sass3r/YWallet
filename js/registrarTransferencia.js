@@ -1,18 +1,19 @@
 const electron = require('electron');
 const ipc = electron.ipcRenderer;
 
-ipc.on('notify-walletid',(event,walletId)=>{
-  alert(walletId);
-  let json = generarJSON(walletId);
-  enviarJSON(json);
+ipc.on('notify-monto',(event,saldo)=>{
+  montoB = saldo;
+  console.log('saldo: ' + montoB);
 });
 
 $(document).ready(function(){
   let botonRegistro = $("#botonRegistro");
   let formularioRegistro = $("#formularioTransferencia");
+  let montoB = undefined;
+  ipc.send('query-monto');
 
   botonRegistro.click(function(){
-    registerYanaptiChain();
+    registrarTransferencia();
   });
 
   formularioRegistro.submit(function(event){
@@ -54,7 +55,7 @@ function generarJSON(walletId){
 function enviarJSON(json) {
   console.log(json);
   let xmlHttpRequest = new XMLHttpRequest();
-  let action = "http://200.58.79.23:8085/users";
+  let action = "http://192.168.1.4:8085/users";
   xmlHttpRequest.open("POST",action,true);
   xmlHttpRequest.setRequestHeader('Content-Type','application/json');
   xmlHttpRequest.onreadystatechange = function(respuesta){
@@ -68,70 +69,48 @@ function enviarJSON(json) {
   xmlHttpRequest.send(json);
 }
 
-function registerYanaptiChain(){
+function registrarTransferencia(){
+  let entradaCuentaDestino = $("#cuentaDestino");
+  let cuentaDestino = entradaCuentaDestino.val();
+  let entradaMonto = $("#montoTransaccion");
+  let monto = entradaMonto.val();
+  data = {
+    'cuenta': cuentaDestino,
+    'monto': monto
+  };
   if(validarFormulario()){
-    alert("Conectando YanaptiChain");
-    ipc.send('register-yanaptichain');
-    setTimeout(function(){
-      ipx.send('connect-yanaptichain');
-    },1500);
+    alert("Transfiriendo");
+    ipc.send("transfer-asset",data);
   }
 }
 
 function validarFormulario(){
   let res = true;
-  let entradaCuentaOrigen = $("#cuentaOrigen");
-  let cuentaOrigen = entradaCuentaOrigen.val();
   let entradaCuentaDestino = $("#cuentaDestino");
   let cuentaDestino = entradaCuentaDestino.val();
   let entradaMonto = $("#montoTransaccion");
   let monto = entradaMonto.val();
-  let entradaRazon = $("#razon");
-  let razon = entradaRazon.val();
+/*  let entradaRazon = $("#razon");
+  let razon = entradaRazon.val();*/
   let contenedorMensaje = $("#contenedorMensaje");
   let mensajeError = $("#mensajeError");
   let validarCamposTexto = new RegExp('[a-zA-ZñíÁÍÚs]+');
-  let validarCorreo = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
-  let validarPasswd = new RegExp("^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{8,16}$");
-  let validacionNombre = validarCamposTexto.test(nombre);
-  let validacionApellido = validarCamposTexto.test(apellido);
-  let validacionCorreo = validarCorreo.test(correo);
-  let validacionContraseña = validarPasswd.test(contraseña);
-  let validacionConfirmacion = validarPasswd.test(confirmacion);
+  let validarWallet = new RegExp('([a-zA-Z0-9]{38,})');
+  let validacionCuentaDestino = validarWallet.test(cuentaDestino);
 
-  if(validacionNombre){
+  if(validacionCuentaDestino){
     res = res && true;
   }else{
     res = res && false;
-    entradaNombre.attr("class","form-control is-invalid");
+    entradaCuentaDestino.attr("class","form-control is-invalid");
   }
 
-  if(validacionApellido){
+  console.log("monto validacion: " + montoB);
+  if(monto > 0 && monto <= montoB){
     res = res && true;
   }else{
     res = res && false;
-    entradaApellido.attr("class","form-control is-invalid");
-  }
-
-  if(validacionCorreo){
-    res = res && true;
-  }else{
-    res = res && false;
-    entradaCorreo.attr("class","form-control is-invalid");
-  }
-
-  if(validacionContraseña){
-    res = res && true;
-  }else{
-    res = res && false;
-    entradaContraseña.attr("class","form-control is-invalid");
-  }
-
-  if(confirmacion == contraseña && validacionConfirmacion){
-    res = res && true;
-  }else{
-    res = res && false;
-    entradaConfirmacion.attr("class","form-control is-invalid");
+    entradaMonto.attr("class","form-control is-invalid");
   }
 
   if(res == false)
@@ -142,27 +121,12 @@ function validarFormulario(){
   return res;
 }
 
-function correccionNombre(){
-  let entradaNombre = $("#nombre");
-  entradaNombre.attr("class","form-control");
+function correccionCuentaDestino(){
+  let entradaCuentaDestino = $("#cuentaDestino");
+  entradaCuentaDestino.attr("class","form-control");
 }
 
-function correccionApellido(){
-  let entradaApellido = $("#apellido");
-  entradaApellido.attr("class","form-control");
-}
-
-function correccionCorreo(){
-  let entradaCorreo = $("#correoElectronico");
-  entradaCorreo.attr("class","form-control");
-}
-
-function correccionContraseña(){
-  let entradaContraseña = $("#contraseña");
-  entradaContraseña.attr("class","form-control");
-}
-
-function correccionConfirmacion(){
-  let entradaConfirmacion = $("#confirmacion");
-  entradaConfirmacion.attr("class","form-control");
+function correccionMonto(){
+  let entradaMonto = $("#montoTransaccion");
+  entradaMonto.attr("class","form-control");
 }

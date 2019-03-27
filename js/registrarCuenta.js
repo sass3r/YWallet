@@ -63,8 +63,11 @@ function enviarJSON(json) {
       if(xmlHttpRequest.status == 200){
         token = respuesta.target.response;
         window.token = token;
+        ipc.send('connect-yanaptichain');
+        ipc.send('view-saldo');
+        ipc.send('notify-token',token);
         console.log(token);
-      }2
+      }
     }
   };
   xmlHttpRequest.send(json);
@@ -74,10 +77,6 @@ function registerYanaptiChain(){
   if(validarFormulario()){
     alert("Conectando YanaptiChain");
     ipc.send('register-yanaptichain');
-    setTimeout(function(){
-      ipx.send('connect-yanaptichain');
-      location.href = "saldo.hmtl"
-    },1500);
   }
 }
 
