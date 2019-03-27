@@ -9,8 +9,7 @@ ipc.on('notify-walletid',(event,walletId)=>{
 
 $(document).ready(function(){
   let botonRegistro = $("#botonRegistro");
-  let formularioRegistro = $("#formularioRegistro");
-  let token = undefined;
+  let formularioRegistro = $("#formularioTransferencia");
 
   botonRegistro.click(function(){
     registerYanaptiChain();
@@ -55,16 +54,15 @@ function generarJSON(walletId){
 function enviarJSON(json) {
   console.log(json);
   let xmlHttpRequest = new XMLHttpRequest();
-  let action = "http://192.168.1.4:8085/users";
+  let action = "http://200.58.79.23:8085/users";
   xmlHttpRequest.open("POST",action,true);
   xmlHttpRequest.setRequestHeader('Content-Type','application/json');
   xmlHttpRequest.onreadystatechange = function(respuesta){
     if(xmlHttpRequest.readyState == 4){
       if(xmlHttpRequest.status == 200){
-        token = respuesta.target.response;
-        window.token = token;
+        let token = respuesta.target.response;
         console.log(token);
-      }2
+      }
     }
   };
   xmlHttpRequest.send(json);
@@ -76,23 +74,20 @@ function registerYanaptiChain(){
     ipc.send('register-yanaptichain');
     setTimeout(function(){
       ipx.send('connect-yanaptichain');
-      location.href = "saldo.hmtl"
     },1500);
   }
 }
 
 function validarFormulario(){
   let res = true;
-  let entradaNombre = $("#nombre");
-  let nombre = entradaNombre.val();
-  let entradaApellido = $("#apellido");
-  let apellido = entradaApellido.val();
-  let entradaCorreo = $("#correoElectronico");
-  let correo = entradaCorreo.val();
-  let entradaContraseña = $("#contraseña");
-  let contraseña = entradaContraseña.val();
-  let entradaConfirmacion = $("#confirmacion");
-  let confirmacion = entradaConfirmacion.val();
+  let entradaCuentaOrigen = $("#cuentaOrigen");
+  let cuentaOrigen = entradaCuentaOrigen.val();
+  let entradaCuentaDestino = $("#cuentaDestino");
+  let cuentaDestino = entradaCuentaDestino.val();
+  let entradaMonto = $("#montoTransaccion");
+  let monto = entradaMonto.val();
+  let entradaRazon = $("#razon");
+  let razon = entradaRazon.val();
   let contenedorMensaje = $("#contenedorMensaje");
   let mensajeError = $("#mensajeError");
   let validarCamposTexto = new RegExp('[a-zA-ZñíÁÍÚs]+');

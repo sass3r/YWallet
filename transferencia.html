@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <meta charset="utf-8">
@@ -21,7 +21,7 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">YANAPTICHAIN</a>
+    <a class="navbar-brand" href="saldo.html">YANAPTICHAIN</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -34,15 +34,15 @@
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="login.html">
+          <a class="nav-link" href="iniciarSesion.html">
             <i class="fa fa-fw fa-sign-in"></i>
-            <span class="nav-link-text">Iniciar Sesión</span>
+            <span class="nav-link-text">Cerrar Sesión</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="registro.html">
+          <a class="nav-link" href="transferencia.html">
             <i class="fa fa-fw fa-user-circle"></i>
-            <span class="nav-link-text">Registrar Cuenta</span>
+            <span class="nav-link-text">Transferencia</span>
           </a>
         </li>
       </ul>
@@ -59,21 +59,47 @@
   </nav>
   <div class="content-wrapper">
     <div class="container-fluid">
+      <ol class="breadcrumb" id="contenedorMensaje" style="display:none;">
+        <li><p style="color:red;" id="mensajeError">Existen errores en el formulario</p></li>
+      </ol>
       <!-- Area Chart Example-->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-sign-in">&nbsp;</i>Iniciar Sesión</div>
+          <i class="fa fa-user-circle">&nbsp;</i>Transferencia</div>
         <div class="card-body">
-          <form name="form-login">
+          <form name="formTransferencia" id="formularioTransferencia">
             <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input class="form-control" id="formEmail" name="email" id="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email">
+              <div class="form-row">
+                <div class="col-md-6">
+                  <label for="exampleInputName">Cuenta Origen</label>
+                  <input class="form-control" name="origen" id="cuentaOrigen" type="text" aria-describedby="nameHelp" onchange="correccionCuentaOrigen()" placeholder="Ingrese la cuenta origen">
+                </div>
+                <div class="col-md-6">
+                  <label for="exampleInputLastName">Cuenta Destino</label>
+                  <input class="form-control" name="destino" id="cuentaDestino" type="text" aria-describedby="nameHelp" onchange="correccionCuentaDestino()" placeholder="Ingrese la cuenta destino">
+                </div>
+              </div>
             </div>
             <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input class="form-control" id="formPassword" name="password" id="exampleInputPassword1" type="password" placeholder="Password">
+              <label for="exampleInputEmail1">Monto</label>
+              <input class="form-control" name="monto" id="montoTransaccion" type="number" aria-describedby="montoHelp" onchange="correccionMonto()" placeholder="Ingrese el monto a transferir">
             </div>
-            <a id="botonLogin" class="btn btn-primary btn-block">Ingresar</a>
+            <!--div class="form-group">
+              <div class="form-row">
+                <div class="col-md-6">
+                  <label for="exampleInputPassword1">Contraseña</label>
+                  <input class="form-control" name="password" id="contraseña" type="password" aria-describedby="passwordHelpBlock" onchange="correccionContraseña()" placeholder="Contraseña">
+                  <small id="passwordHelpBlock" class="form-text text-muted">
+                   La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, una minúscula y una mayúscula.
+                  </small>
+                </div>
+                <div class="col-md-6">
+                  <label for="exampleConfirmPassword">Confirmar Contraseña</label>
+                  <input class="form-control" id="confirmacion" type="password" onchange="correccionConfirmacion()" placeholder="Confirmar Contraseña">
+                </div>
+              </div>
+            </div--!>
+            <button class="btn btn-primary btn-block" id="botonRegistro">Transferir</button>
           </form>
         </div>
       </div>
@@ -109,13 +135,13 @@
         </div>
       </div>
     </div>
+    <!-- Custom scripts for all pages-->
     <script>
       var $ = require("jquery");
       require('bootstrap');
       window.jQuery = $;
     </script>
-    <script src="js/sb-admin.min.js"></script>
-    <script src="js/iniciarSesion.js"></script>
+    <script src="js/registrarTransferencia.js"></script>
   </div>
 </body>
 
