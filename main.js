@@ -1,11 +1,22 @@
 const {app, BrowserWindow} = require('electron');
 const { spawn } = require('child_process');
 const { autoUpdater } = require("electron-updater");
+const log = require('electron-log');
+const fs = require('fs');
 const ipc = require('electron').ipcMain;
 let authUser = undefined;
 let win;
 
+log.transports.file.level = 'debug';
+log.transports.file.maxSize = 15 * 1024 * 1024;
+log.transports.file.file = __dirname + '/app.log';
+log.transports.file.streamConfig = { flags: 'a' };
+log.transports.file.stream = fs.createWriteStream(log.transports.file.file);
+log.transports.console.level = 'debug';
+autoUpdater.logger = log;
+
 function createWindow () {
+  log.info('App starting');
   win = new BrowserWindow({
       width: 800, 
       height:600,
@@ -17,10 +28,10 @@ function createWindow () {
   win.on('closed', function () {
       win = null;
   });
-  autoUpdater.checkForUpdatesAndNotify();
-  win.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
-  });
+  setTimeout(()=>{
+    log.info('starting update check');
+    autoUpdater.checkForUpdates();
+  },1000);
 }
 
 function closeWindow () {
