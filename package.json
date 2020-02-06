@@ -1,6 +1,6 @@
 {
   "name": "ywallet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Yanapti Wallet",
   "main": "main.js",
   "dependencies": {
@@ -15,14 +15,13 @@
     "electron": "^2.0.4",
     "electron-builder": "^20.44.1",
     "electron-packager": "^13.1.1"
-    
   },
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder build --win --publish never",
+    "build": "electron-builder build --win --publish never --config=electron-builder.yml",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "deploy": "electron-builder build --win --publish always"
+    "deploy": "electron-builder build --win --publish always --config=electron-builder.yml"
   },
   "build": {
     "appId": "com.yanapti.ywallet",
