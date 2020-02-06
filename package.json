@@ -14,7 +14,7 @@
   },
   "devDependencies": {
     "electron": "^3.0.0",
-    "electron-builder": "^20.44.1",
+    "electron-builder": "^22.2.0",
     "electron-packager": "^13.1.1"
   },
   "scripts": {

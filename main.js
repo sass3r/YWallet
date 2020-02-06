@@ -63,7 +63,7 @@ function connectYanaptiChain() {
 }
 
 function registerYanaptiChain() {
-    const cmd = spawn('resources\\app\\bin\\multichaind.exe', ['YanaptiChain@178.128.228.106:6801']);
+    const cmd = spawn('resources\\app\\bin\\multichaind.exe', ['YanaptiChain@178.128.228.106:2783']);
 
     cmd.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
