@@ -96,7 +96,9 @@ function consultarSaldo(){
         if(balance)
             saldo = balance.qty;
         console.log('saldo: ' + saldo);
-        win.webContents.send('notify-monto',saldo);
+        if(win !== null) {
+            win.webContents.send('notify-monto',saldo);
+        }
     });
 
     cmd.stderr.on('data', (data) => {

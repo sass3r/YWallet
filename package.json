@@ -1,6 +1,6 @@
 {
   "name": "ywallet",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Yanapti Wallet",
   "main": "main.js",
   "dependencies": {
