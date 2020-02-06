@@ -57,18 +57,29 @@
       </ul>
     </div>
   </nav>
-  <div id="notification" class="hidden">
-    <p id="message"></p>
-    <button id="close-button" onClick="closeNotification()">
-      Close
-    </button>
-    <button id="restart-button" onClick="restartApp()" class="hidden">
-      Restart
-    </button>
+  <!-- Modal -->
+<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Actualizacion</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="message"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button id="restart-button" type="button" class="btn btn-primary hidden" onClick="restartApp()">Reiniciar</button>
+      </div>
+    </div>
   </div>
+</div>
+<!-- end modal-->
   <div class="content-wrapper">
     <div class="container-fluid">
-      <!-- Area Chart Example-->
       <div class="card mb-3">
         <div class="card-header">
           <i class="fa fa-bitcoin">&nbsp;</i>YanaptiCoin</div>
@@ -77,7 +88,7 @@
             <div class="col-sm">
               <h3>Únete a la revolución de las criptomonedas</h3>
               <br/>
-              <a class="btn btn-primary" href="registro.html"><strong>Crea tu billetera</strong></a>
+              <a class="btn btn-primary" href="registro.html"><strong>Crea tu billetera</strong></a>            
             </div>
             <div class="col-sm">
               <img src="images/yanapticoins.jpg"/>

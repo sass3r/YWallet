@@ -17,6 +17,7 @@ function createWindow () {
   win.on('closed', function () {
       win = null;
   });
+  autoUpdater.checkForUpdatesAndNotify();
   win.once('ready-to-show', () => {
     autoUpdater.checkForUpdatesAndNotify();
   });
