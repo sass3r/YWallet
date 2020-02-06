@@ -6,11 +6,22 @@ ipc.on('notify-monto',(event,saldo)=>{
   console.log('saldo: ' + montoB);
 });
 
+ipc.on('get-user-view',(event,user)=>{
+  currentUser = user;
+  ipc.send('verify-password');
+  ipc.send('verify-email');
+  console.log('currentUser :'+currentUser);
+  getUsers();
+});
+
+
 $(document).ready(function(){
   let botonRegistro = $("#botonRegistro");
   let formularioRegistro = $("#formularioTransferencia");
   let montoB = undefined;
+  let currentUser = undefined;
   ipc.send('query-monto');
+  ipc.send('get-user','get-user-view');
 
   botonRegistro.click(function(){
     registrarTransferencia();
@@ -41,13 +52,42 @@ $(document).ready(function(){
 
 });
 
+function getUsers(){
+  let xmlHttpRequest = new XMLHttpRequest();
+  let action = "http://178.128.228.106:8086/users";
+  xmlHttpRequest.open("GET",action,true);
+  xmlHttpRequest.setRequestHeader('Content-Type','application/json');
+  xmlHttpRequest.setRequestHeader("Authorization", 'Bearer '+ currentUser.token);
+  xmlHttpRequest.onreadystatechange = function(respuesta){
+    if(xmlHttpRequest.readyState == 4){
+      if(xmlHttpRequest.status == 200){
+        users = JSON.parse(respuesta.target.response);
+        buildSelect(users);
+        console.log(users);
+        console.log(currentUser);
+      }
+    }
+  };
+  xmlHttpRequest.send();
+}
+
+function buildSelect(users) {
+  let cuentaDestino = $('#cuentaDestino');
+  users.forEach((user) => {
+    let option = document.createElement("option");
+    option.text = user.name + " " + user.lastname;
+    option.value = user.wallet;
+    cuentaDestino.append(option);
+  });
+}
+
 function generarJSON(walletId){
   let object = {};
-  let formData = new FormData(document.forms.namedItem("formRegistro"));
+  let formData = new FormData(document.forms.namedItem("formTransferencia"));
   formData.forEach((value, key) =>  {
     object[key] = value;
   });
-  object["wallet"] = walletId;
+  object["sender"] = walletId;
   let json = JSON.stringify(object);
   return json;
 }
@@ -55,14 +95,16 @@ function generarJSON(walletId){
 function enviarJSON(json) {
   console.log(json);
   let xmlHttpRequest = new XMLHttpRequest();
-  let action = "http://192.168.1.4:8085/users";
+  let action = "http://178.128.228.106:8086/transfer";
   xmlHttpRequest.open("POST",action,true);
   xmlHttpRequest.setRequestHeader('Content-Type','application/json');
+  xmlHttpRequest.setRequestHeader("Authorization", 'Bearer '+ currentUser.token);
   xmlHttpRequest.onreadystatechange = function(respuesta){
     if(xmlHttpRequest.readyState == 4){
       if(xmlHttpRequest.status == 200){
-        let token = respuesta.target.response;
-        console.log(token);
+        let response = respuesta.target.response;
+        console.log(response);
+        location.href = "saldo.html";
       }
     }
   };
@@ -81,6 +123,8 @@ function registrarTransferencia(){
   if(validarFormulario()){
     alert("Transfiriendo");
     ipc.send("transfer-asset",data);
+    let json = generarJSON(currentUser.wallet);
+    enviarJSON(json);
   }
 }
 

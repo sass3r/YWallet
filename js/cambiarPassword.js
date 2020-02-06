@@ -1,21 +1,24 @@
 const electron = require('electron');
 const ipc = electron.ipcRenderer;
 
-ipc.on('notify-walletid',(event,walletId)=>{
-  alert('Identificador de billetera: ' + walletId + ' asignada.');
-  let json = generarJSON(walletId);
-  enviarJSON(json);
+ipc.on('get-user-view',(event,user)=>{
+  currentUser = user;
+  console.log('currentUser :'+currentUser);
 });
 
-$(document).ready(function(){
-  let botonRegistro = $("#botonRegistro");
-  let formularioRegistro = $("#formularioRegistro");
 
-  botonRegistro.click(function(){
-    registerYanaptiChain();
+$(document).ready(function(){
+  let botonCambio = $("#botonCambio");
+  let formularioPassword = $("#formPassword");
+  let currentUser = undefined;
+  $('#transf').hide();
+  ipc.send('get-user','get-user-view');
+
+  botonCambio.click(function(){
+    cambiarPassword();
   });
 
-  formularioRegistro.submit(function(event){
+  formularioPassword.submit(function(event){
     event.preventDefault();
   });
   // Toggle the side navigation
@@ -40,86 +43,68 @@ $(document).ready(function(){
 
 });
 
-function generarJSON(walletId){
+function generarJSON(){
   let object = {};
-  let formData = new FormData(document.forms.namedItem("formRegistro"));
+  let formData = new FormData(document.forms.namedItem("formPassword"));
   formData.forEach((value, key) =>  {
     object[key] = value;
   });
-  object["wallet"] = walletId;
   let json = JSON.stringify(object);
   return json;
 }
 
-function enviarJSON(json) {
+function enviarJSON(json, idUser) {
   console.log(json);
+  console.log(idUser);
   let xmlHttpRequest = new XMLHttpRequest();
-  let action = "http://178.128.228.106:8086/users";
-  xmlHttpRequest.open("POST",action,true);
+  let action = "http://178.128.228.106:8086/users/"+idUser;
+  console.log(action);
+  xmlHttpRequest.open("PUT",action,true);
   xmlHttpRequest.setRequestHeader('Content-Type','application/json');
   xmlHttpRequest.onreadystatechange = function(respuesta){
     if(xmlHttpRequest.readyState == 4){
       if(xmlHttpRequest.status == 200){
         let response = respuesta.target.response;
-        ipc.send('connect-yanaptichain');
-        ipc.send('view-saldo');
-        ipc.send('notify-user',response);
         console.log(response);
+        alert("Contraseña cambiada satisfactoriamente");
+        location.href = "saldo.html";
+      }
+
+      if(xmlHttpRequest.status == 401){
+        alert("La contraseña es incorrecta");
       }
     }
   };
   xmlHttpRequest.send(json);
 }
 
-function registerYanaptiChain(){
+function cambiarPassword(){
   if(validarFormulario()){
-    ipc.send('register-yanaptichain');
+    let json = generarJSON();
+    enviarJSON(json,currentUser._id);
   }
 }
 
+showTransf = (currentUser) => {
+  let rol = currentUser.rol;
+  if(rol == 2) {
+    $('#transf').show();
+  }
+};
+
 function validarFormulario(){
   let res = true;
-  let entradaNombre = $("#nombre");
-  let nombre = entradaNombre.val();
-  let entradaApellido = $("#apellido");
-  let apellido = entradaApellido.val();
-  let entradaCorreo = $("#correoElectronico");
-  let correo = entradaCorreo.val();
-  let entradaContraseña = $("#contraseña");
+  let entradaContraseña = $("#passwordActual");
   let contraseña = entradaContraseña.val();
-  let entradaConfirmacion = $("#confirmacion");
+  let entradaContraseñaNueva = $("#passwordNuevo");
+  let contraseñaNueva = entradaContraseñaNueva.val();
+  let entradaConfirmacion = $("#passwordConfirm");
   let confirmacion = entradaConfirmacion.val();
   let contenedorMensaje = $("#contenedorMensaje");
-  let mensajeError = $("#mensajeError");
-  let validarCamposTexto = new RegExp('[a-zA-ZñíÁÍÚs]+');
-  let validarCorreo = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$");
   let validarPasswd = new RegExp("^(?=\\w*\\d)(?=\\w*[A-Z])(?=\\w*[a-z])\\S{8,16}$");
-  let validacionNombre = validarCamposTexto.test(nombre);
-  let validacionApellido = validarCamposTexto.test(apellido);
-  let validacionCorreo = validarCorreo.test(correo);
   let validacionContraseña = validarPasswd.test(contraseña);
+  let validacionContraseñaNueva = validarPasswd.test(contraseñaNueva);
   let validacionConfirmacion = validarPasswd.test(confirmacion);
-
-  if(validacionNombre){
-    res = res && true;
-  }else{
-    res = res && false;
-    entradaNombre.attr("class","form-control is-invalid");
-  }
-
-  if(validacionApellido){
-    res = res && true;
-  }else{
-    res = res && false;
-    entradaApellido.attr("class","form-control is-invalid");
-  }
-
-  if(validacionCorreo){
-    res = res && true;
-  }else{
-    res = res && false;
-    entradaCorreo.attr("class","form-control is-invalid");
-  }
 
   if(validacionContraseña){
     res = res && true;
@@ -128,7 +113,14 @@ function validarFormulario(){
     entradaContraseña.attr("class","form-control is-invalid");
   }
 
-  if(confirmacion == contraseña && validacionConfirmacion){
+  if(validacionContraseñaNueva){
+    res = res && true;
+  }else{
+    res = res && false;
+    entradaContraseñaNueva.attr("class","form-control is-invalid");
+  }
+
+  if(confirmacion == contraseñaNueva && validacionConfirmacion){
     res = res && true;
   }else{
     res = res && false;
@@ -140,30 +132,21 @@ function validarFormulario(){
   else
     contenedorMensaje[0].style.display = "none";
 
+
   return res;
 }
 
-function correccionNombre(){
-  let entradaNombre = $("#nombre");
-  entradaNombre.attr("class","form-control");
-}
-
-function correccionApellido(){
-  let entradaApellido = $("#apellido");
-  entradaApellido.attr("class","form-control");
-}
-
-function correccionCorreo(){
-  let entradaCorreo = $("#correoElectronico");
-  entradaCorreo.attr("class","form-control");
-}
-
 function correccionContraseña(){
-  let entradaContraseña = $("#contraseña");
+  let entradaContraseña = $("#passwordActual");
   entradaContraseña.attr("class","form-control");
 }
 
+function correccionContraseñaNueva(){
+  let entradaContraseñaNueva = $("#passwordNuevo");
+  entradaContraseñaNueva.attr("class","form-control");
+}
+
 function correccionConfirmacion(){
-  let entradaConfirmacion = $("#confirmacion");
+  let entradaConfirmacion = $("#passwordConfirm");
   entradaConfirmacion.attr("class","form-control");
 }

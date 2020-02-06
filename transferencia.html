@@ -27,22 +27,28 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Inicio">
           <a class="nav-link" href="saldo.html">
             <i class="fa fa-fw fa-home"></i>
             <span class="nav-link-text">Inicio</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Cerrar Sesión">
           <a class="nav-link" href="iniciarSesion.html">
             <i class="fa fa-fw fa-sign-in"></i>
             <span class="nav-link-text">Cerrar Sesión</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Transferencia">
           <a class="nav-link" href="transferencia.html">
-            <i class="fa fa-fw fa-user-circle"></i>
+            <i class="fa fa-fw fa-btc"></i>
             <span class="nav-link-text">Transferencia</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Cambiar Contraseña">
+          <a class="nav-link" href="cambiarPassword.html">
+            <i class="fa fa-fw fa-key"></i>
+            <span class="nav-link-text">Cambiar Contraseña</span>
           </a>
         </li>
       </ul>
@@ -65,41 +71,24 @@
       <!-- Area Chart Example-->
       <div class="card mb-3">
         <div class="card-header">
-          <i class="fa fa-user-circle">&nbsp;</i>Transferencia</div>
+          <i class="fa fa-btc">&nbsp;</i>Transferencia</div>
         <div class="card-body">
           <form name="formTransferencia" id="formularioTransferencia">
             <div class="form-group">
               <div class="form-row">
                 <div class="col-md-6">
-                  <label for="exampleInputLastName">Cuenta Destino</label>
-                  <input class="form-control" name="destino" id="cuentaDestino" type="text" aria-describedby="nameHelp" onchange="correccionCuentaDestino()" placeholder="Ingrese la cuenta destino">
+                  <label for="cuentaDestino">Cuenta Destino</label>
+                  <!--<input class="form-control" name="receiver" id="cuentaDestino" type="text" aria-describedby="nameHelp" onchange="correccionCuentaDestino()" placeholder="Ingrese la cuenta destino"-->
+                  <select class="form-control" id="cuentaDestino">
+                    <option>Seleccione una cuenta</option>
+                  </select>
                 </div>
               </div>
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">Monto</label>
-              <input class="form-control" name="monto" id="montoTransaccion" type="number" aria-describedby="montoHelp" onchange="correccionMonto()" placeholder="Ingrese el monto a transferir">
+              <label for="montoTransaccion">Monto</label>
+              <input class="form-control" name="amount" id="montoTransaccion" type="number" aria-describedby="montoHelp" onchange="correccionMonto()" placeholder="Ingrese el monto a transferir">
             </div>
-            <!--div class="form-group">
-              <label for="exampleInputEmail1">Razon</label>
-              <input class="form-control" name="razon" id="razon" type="text" aria-describedby="razonHelp" onchange="correccionRazon()" placeholder="Ingrese el motivo de la transaccion">
-            </div--!>
-
-            <!--div class="form-group">
-              <div class="form-row">
-                <div class="col-md-6">
-                  <label for="exampleInputPassword1">Contraseña</label>
-                  <input class="form-control" name="password" id="contraseña" type="password" aria-describedby="passwordHelpBlock" onchange="correccionContraseña()" placeholder="Contraseña">
-                  <small id="passwordHelpBlock" class="form-text text-muted">
-                   La contraseña debe tener entre 8 y 16 caracteres, al menos un dígito, una minúscula y una mayúscula.
-                  </small>
-                </div>
-                <div class="col-md-6">
-                  <label for="exampleConfirmPassword">Confirmar Contraseña</label>
-                  <input class="form-control" id="confirmacion" type="password" onchange="correccionConfirmacion()" placeholder="Confirmar Contraseña">
-                </div>
-              </div>
-            </div--!>
             <button class="btn btn-primary btn-block" id="botonRegistro">Transferir</button>
           </form>
         </div>
@@ -110,7 +99,7 @@
     <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
-          <small>Copyright © Yanapti Team 2018</small>
+          <small>Yanapti Team 2019</small>
         </div>
       </div>
     </footer>

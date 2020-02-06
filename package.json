@@ -7,13 +7,31 @@
     "bootstrap": "^4.1.1",
     "jquery": "^3.3.1",
     "popper": "^1.0.1",
-    "popper.js": "^1.14.3"
+    "popper.js": "^1.14.3",
+    "yarn": "^1.15.2",
+    "electron-updater": "^4.2.0"
   },
   "devDependencies": {
-    "electron": "^2.0.4"
+    "electron": "^2.0.4",
+    "electron-builder": "^20.44.1",
+    "electron-packager": "^13.1.1"
+    
   },
   "scripts": {
-    "test": "electron ."
+    "start": "electron .",
+    "build": "electron-builder build --win --publish never",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "deploy": "electron-builder build --win --publish always"
+  },
+  "build": {
+    "appId": "com.yanapti.ywallet",
+    "asar": false,
+    "forceCodeSigning": false,
+    "files": [
+      "**/*",
+      "bin/*"
+    ]
   },
   "repository": {
     "type": "git",

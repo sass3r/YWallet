@@ -21,25 +21,25 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">YANAPTICHAIN</a>
+    <a class="navbar-brand" href="#">YANAPTICHAIN</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Inicio">
           <a class="nav-link" href="inicio.html">
             <i class="fa fa-fw fa-home"></i>
             <span class="nav-link-text">Inicio</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Iniciar Sesión">
           <a class="nav-link" href="iniciarSesion.html">
             <i class="fa fa-fw fa-sign-in"></i>
             <span class="nav-link-text">Iniciar Sesión</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Registrar Cuenta">
           <a class="nav-link" href="registro.html">
             <i class="fa fa-fw fa-user-circle"></i>
             <span class="nav-link-text">Registrar Cuenta</span>
@@ -57,6 +57,15 @@
       </ul>
     </div>
   </nav>
+  <div id="notification" class="hidden">
+    <p id="message"></p>
+    <button id="close-button" onClick="closeNotification()">
+      Close
+    </button>
+    <button id="restart-button" onClick="restartApp()" class="hidden">
+      Restart
+    </button>
+  </div>
   <div class="content-wrapper">
     <div class="container-fluid">
       <!-- Area Chart Example-->
@@ -68,7 +77,7 @@
             <div class="col-sm">
               <h3>Únete a la revolución de las criptomonedas</h3>
               <br/>
-              <a class="btn btn-primary" href="registro.html"><strong style="color: white;">Crea tu billetera</strong></a>
+              <a class="btn btn-primary" href="registro.html"><strong>Crea tu billetera</strong></a>
             </div>
             <div class="col-sm">
               <img src="images/yanapticoins.jpg"/>
@@ -82,7 +91,10 @@
     <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
-          <small>Copyright © Yanapti Team 2018</small>
+          <small>Yanapti Team 2019</small>
+        </div>
+        <div class="text-center">
+          <small id="version"></small>
         </div>
       </div>
     </footer>
@@ -114,6 +126,7 @@
       window.jQuery = $;
     </script>
     <script src="js/sb-admin.min.js"></script>
+    <script src="js/autoupdater.js"></script>
   </div>
 </body>
 
